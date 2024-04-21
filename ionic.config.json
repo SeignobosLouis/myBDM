@@ -1,0 +1,7 @@
+{
+  "name": "myBDM",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
