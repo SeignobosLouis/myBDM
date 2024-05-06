@@ -1,20 +1,62 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Accueil
     </ion-title>
+    <ion-buttons slot="end">
+    <ion-button>
+      <ion-avatar>
+        <img src="../../assets/images/bluddy.png" alt="User avatar" />
+      </ion-avatar>
+    </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Accueil</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ng-container *ngTemplateOutlet="hasData ? hasDataTemplate : noDataTemplate"></ng-container>
+  <ng-template #hasDataTemplate>
+    <div class="center-container">
+      <ion-text class="upper-text">Sondage en cours</ion-text>
+      <ion-card>
+        <img alt="Background survey image" src="../../assets/images/drive_baby.jpg" />
+        <ion-card-header>
+          <ion-card-title>Pizza party CROUS</ion-card-title>
+          <div class="flex-container">
+            <ion-avatar slot="start">
+              <img src="../../assets/images/bluddy.png" alt="Creator Profile Picture">
+            </ion-avatar>
+            <ion-card-subtitle>Soumis par Ryan Gosling</ion-card-subtitle>
+          </div>
+
+        </ion-card-header>
+
+        <ion-card-content>
+          <p>Le premier qui vote pas pour moi passera au fond même s'il n'y a rien du tout. </p>
+          <ion-button expand="full" fill="solid" color="primary">
+            <ion-icon slot="start" name="beer-outline"></ion-icon>
+            <ion-text (click)="goToVote()">Voter</ion-text>
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </ng-template>
+
+  <ng-template #noDataTemplate>
+    <div class="center-container">
+      <ion-text class="upper-text">C'est un peu calme ici ^^</ion-text>
+      <ion-button expand="full" fill="solid" color="primary" (click)="goToSurvey()">
+        <ion-icon slot="start" name="beer-outline"></ion-icon>
+        <ion-text>Créer un sondage</ion-text>
+      </ion-button>
+    </div>
+  </ng-template>
+
 </ion-content>

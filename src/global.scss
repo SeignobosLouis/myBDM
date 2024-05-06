@@ -35,3 +35,41 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+@import 'swiper/scss';
+@import 'swiper/scss/effect-coverflow';
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1vh;
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.right-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.upper-text {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+#profile-picture-icon {
+  font-size: 10vh;
+}
+
+ion-avatar {
+  width: 5vh;
+  height: 5vh;
+  border: 2px solid blue;
+}

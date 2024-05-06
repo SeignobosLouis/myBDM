@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { LaunchService } from '../services/launch.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +9,27 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(private launchService: LaunchService, private router: Router) {}
+
+  hasData: boolean = false;
+
+  ionViewWillEnter() {
+    this.launchService.getSondages().subscribe({
+      next: (sondages) => {
+        this.hasData = sondages;
+      },
+      //error: (error) => {
+      //  alert('La connection via l\'API s\'est mal passe');
+      //}
+    });
+  }
+
+  goToSurvey(){
+    this.router.navigate(['/survey']);
+  }
+
+  goToVote(){
+    this.router.navigate(['/vote']);
+  }
 
 }

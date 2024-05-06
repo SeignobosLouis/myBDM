@@ -7,6 +7,18 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'survey',
+    loadChildren: () => import('./survey/survey.module').then (m => m.SurveyPageModule)
+  },
+  {
+    path: 'survey-steps',
+    loadChildren: () => import('./survey-steps/survey-steps.module').then( m => m.SurveyStepsPageModule)
+  },
+  {
+    path: 'vote',
+    loadChildren: () => import('./vote/vote.module').then( m => m.VotePageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

@@ -1,0 +1,14 @@
+<div id="chart">
+  <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [grid]="chartOptions.grid"
+    [plotOptions]="chartOptions.plotOptions" [responsive]="chartOptions.responsive"
+    [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill" [legend]="chartOptions.legend"
+    [tooltip]="chartOptions.tooltip"></apx-chart>
+</div>
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+  <svg [attr.width]="500" [attr.height]="500" viewBox="-250 -250 500 500" style="transform: scaleY(-1);">
+    <g>
+      <circle [attr.cx]="cursorX" [attr.cy]="cursorY" [attr.fill]="'blue'" r="20"></circle>
+    </g>
+  </svg>
+</div>
