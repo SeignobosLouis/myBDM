@@ -12,36 +12,51 @@
   </ion-toolbar>
 </ion-header>
 
-  <ion-content>
-    <swiper-container #swiper (slidechange)="swiperSlideChanged($event)" [pagination]="true">
-      <swiper-slide>
-        <ion-item>
-          <div id="chartAndSvgContainer"> <!-- Conteneur parent positionné relativement -->
-            <div id="chart">
-              <apx-chart [series]="daysChartOptions.series" [chart]="daysChartOptions.chart" [grid]="daysChartOptions.grid"
-                [plotOptions]="daysChartOptions.plotOptions" [responsive]="daysChartOptions.responsive"
-                [dataLabels]="daysChartOptions.dataLabels" [fill]="daysChartOptions.fill" [legend]="daysChartOptions.legend"
-                [tooltip]="daysChartOptions.tooltip"></apx-chart>
-            </div>
-            <div id="svgContainer">
-              <svg [attr.width]="500" [attr.height]="500" viewBox="-250 -250 500 500" style="transform: scaleY(-1);">
-                <g>
-                  <circle [attr.cx]="cursorX" [attr.cy]="cursorY" [attr.fill]="'blue'" r="20"></circle>
-                </g>
-              </svg>
-            </div>
+<ion-content>
+  <swiper-container #swiper (slidechange)="swiperSlideChanged($event)" [pagination]="true">
+    <swiper-slide>
+      <ion-text>
+        cursorX: {{ cursorX }}
+      </ion-text>
+      <ion-text>cursorY: {{ cursorY }}</ion-text>
+
+      <ion-text>cos: {{ cos }}</ion-text>
+
+      <ion-text>sin: {{ sin }}</ion-text>
+      <ion-text>phoneTiltAngle: {{ phoneTiltAngle }}</ion-text>
+
+      <input type="number" [value]="viewBoxMaxRadius" (input)="updateNumber($event)" />
+
+      <ion-item>
+        <div id="chartAndSvgContainer"> <!-- Conteneur parent positionné relativement -->
+
+          <div id="svgContainer">
+            <svg viewBox="-250 -250 500 500" style="transform: scaleY(-1);">
+              <g>
+                <circle [attr.cx]="cursorX" [attr.cy]="cursorY" [attr.fill]="'blue'" r="20"></circle>
+              </g>
+            </svg>
           </div>
-        </ion-item>
-      </swiper-slide>
+          <div id="chart">
+            <apx-chart [series]="daysChartOptions.series" [chart]="daysChartOptions.chart"
+              [grid]="daysChartOptions.grid" [plotOptions]="daysChartOptions.plotOptions"
+              [responsive]="daysChartOptions.responsive" [dataLabels]="daysChartOptions.dataLabels"
+              [fill]="daysChartOptions.fill" [legend]="daysChartOptions.legend"
+              [tooltip]="daysChartOptions.tooltip"></apx-chart>
+          </div>
+        </div>
+      </ion-item>
+    </swiper-slide>
     <swiper-slide>
       <ion-item>
         <div id="chart">
-          <apx-chart [series]="hoursChartOptions.series" [chart]="hoursChartOptions.chart" [grid]="hoursChartOptions.grid"
-            [plotOptions]="hoursChartOptions.plotOptions" [responsive]="hoursChartOptions.responsive"
-            [dataLabels]="hoursChartOptions.dataLabels" [fill]="hoursChartOptions.fill" [legend]="hoursChartOptions.legend"
+          <apx-chart [series]="hoursChartOptions.series" [chart]="hoursChartOptions.chart"
+            [grid]="hoursChartOptions.grid" [plotOptions]="hoursChartOptions.plotOptions"
+            [responsive]="hoursChartOptions.responsive" [dataLabels]="hoursChartOptions.dataLabels"
+            [fill]="hoursChartOptions.fill" [legend]="hoursChartOptions.legend"
             [tooltip]="hoursChartOptions.tooltip"></apx-chart>
         </div>
-        
+
         <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
           <svg [attr.width]="500" [attr.height]="500" viewBox="-250 -250 500 500" style="transform: scaleY(-1);">
             <g>
@@ -53,4 +68,3 @@
     </swiper-slide>
   </swiper-container>
 </ion-content>
-

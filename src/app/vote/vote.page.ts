@@ -43,19 +43,25 @@ export class VotePage {
   private cursorArray: number[] = [];
   private daysCount: number = 0;
   private hoursCount: number = 0;
-  private phoneTiltAngle: number = 0;
+  //TO CHANGE
+  private readonly tiltAngleCorrection: number = 1.92;
+   phoneTiltAngle: number = 0;
   private sampleSize: number = 10;
-  private readonly viewBoxMaxRadius: number = 250;
+   viewBoxMaxRadius: number = 145;
   private readonly daysName: string[] = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
   private readonly hoursName: string[] = ["17h", "18h", "19h", "20h", "21h", "22h", "23h", "24h"];
+  cos: number | undefined;
+  sin: number | undefined;
   swiper?: Swiper;
+  updateNumber(event: any) {
+    this.viewBoxMaxRadius = parseInt(event.target.value, 10);
+  }
 
   constructor(private cdr: ChangeDetectorRef) {
     this.daysChartOptions = {
       series: [1, 1, 1, 1, 1, 1, 1],
       chart: {
-        width: '200%',
-        
+        width: '100%',
         type: "donut"
       },
       responsive: [
@@ -122,10 +128,11 @@ export class VotePage {
 
   ionViewWillEnter() {
     Motion.addListener('accel', (data: any) => {
-      this.phoneTiltAngle = Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI / 2);
+      this.phoneTiltAngle = (1.25 * (Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI / 2))) - this.tiltAngleCorrection;
+      this.cos = Math.cos(this.phoneTiltAngle);
+      this.sin = Math.sin(this.phoneTiltAngle);
       this.cursorX = this.calculateCursorSmooth(this.viewBoxMaxRadius * Math.cos(this.phoneTiltAngle), 'X');
       this.cursorY = this.calculateCursorSmooth(this.viewBoxMaxRadius * Math.sin(this.phoneTiltAngle), 'Y');
-      
       this.cdr.detectChanges();
     });
   }
