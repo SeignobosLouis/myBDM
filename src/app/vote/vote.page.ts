@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { Motion } from '@capacitor/motion';
 import {
-  ChartComponent,
   ApexNonAxisChartSeries,
   ApexChart,
   ApexResponsive,
@@ -12,6 +11,8 @@ import {
   ApexLegend,
   ApexTooltip,
 } from "ng-apexcharts";
+
+import { Swiper } from 'swiper';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -32,14 +33,29 @@ export type ChartOptions = {
   styleUrls: ['./vote.page.scss'],
 })
 export class VotePage {
-
-  public chartOptions: ChartOptions;
+  @ViewChild('swiper') swiperRef: ElementRef | undefined;
+  public daysChartOptions: ChartOptions;
+  public hoursChartOptions: ChartOptions;
+  public cursorX: number | undefined;
+  public cursorY: number | undefined;
+  private cursorXValues: number[] = [];
+  private cursorYValues: number[] = [];
+  private cursorArray: number[] = [];
+  private daysCount: number = 0;
+  private hoursCount: number = 0;
+  private phoneTiltAngle: number = 0;
+  private sampleSize: number = 10;
+  private readonly viewBoxMaxRadius: number = 250;
+  private readonly daysName: string[] = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+  private readonly hoursName: string[] = ["17h", "18h", "19h", "20h", "21h", "22h", "23h", "24h"];
+  swiper?: Swiper;
 
   constructor(private cdr: ChangeDetectorRef) {
-    this.chartOptions = {
+    this.daysChartOptions = {
       series: [1, 1, 1, 1, 1, 1, 1],
       chart: {
-        width: '100%',
+        width: '200%',
+        
         type: "donut"
       },
       responsive: [
@@ -56,7 +72,24 @@ export class VotePage {
         pie: {
           startAngle: -90,
           endAngle: 90,
-          offsetY: 10
+          offsetY: 10,
+          donut: {
+            labels: {
+              show: true,
+              value: {
+                show: false,
+              },
+              total: {
+                show: false,
+              },
+              name: {
+                show: true,
+                color: 'blue', 
+                formatter: (data: string) =>
+                  this.donutFieldsNameFormatter(data, 'week'),
+              }
+            },
+          }
         }
       },
       grid: {
@@ -65,7 +98,7 @@ export class VotePage {
         }
       },
       dataLabels: {
-        formatter: this.dataLabelsFormatter.bind(this),
+        formatter: this.dataLabelsFormatter.bind(this, 'week'),
       },
       fill: {
         type: 'image',
@@ -78,62 +111,80 @@ export class VotePage {
       },
       tooltip: {
         enabled: false,
-      }
+      },
     };
-  }
 
-  cursorX: number | undefined;
-  cursorY: number | undefined;
-  private sampleSize = 10;
-  private cursorXValues: number[] = [];
-  private cursorYValues: number[] = [];
-  private readonly viewBoxMaxRadius: number = 250;
-
-  private calculateCursorXSmooth(newValue: number): number {
-    this.cursorXValues.push(newValue);
-    if (this.cursorXValues.length > this.sampleSize) {
-      this.cursorXValues.shift();
-    }
-  
-    // Si le tableau ne contient pas assez d'éléments, retourner la dernière valeur
-    if (this.cursorXValues.length < this.sampleSize) {
-      return this.cursorXValues[this.cursorXValues.length - 1];
-    }
-  
-    return this.cursorXValues.reduce((a, b) => a + b, 0) / this.cursorXValues.length;
-  }
-  
-  private calculateCursorYSmooth(newValue: number): number {
-    this.cursorYValues.push(newValue);
-    if (this.cursorYValues.length > this.sampleSize) {
-      this.cursorYValues.shift();
-    }
-  
-    // Si le tableau ne contient pas assez d'éléments, retourner la dernière valeur
-    if (this.cursorYValues.length < this.sampleSize) {
-      return this.cursorYValues[this.cursorYValues.length - 1];
-    }
-  
-    return this.cursorYValues.reduce((a, b) => a + b, 0) / this.cursorYValues.length;
-  }
-  
-  
-  weekDaysName: string[] = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-  weekDaysCount: number = 0;
-
-  dataLabelsFormatter(): string {
-    return this.weekDaysName[this.weekDaysCount++ % 7];
+    this.hoursChartOptions = JSON.parse(JSON.stringify(Object.assign({}, this.daysChartOptions)));
+    this.hoursChartOptions.series.push(1);
+    this.hoursChartOptions.dataLabels.formatter = this.dataLabelsFormatter.bind(this, 'hour');
+    this.hoursChartOptions.plotOptions.pie!.donut!.labels!.name!.formatter = (data: string) => this.donutFieldsNameFormatter(data, 'hour');
   }
 
   ionViewWillEnter() {
     Motion.addListener('accel', (data: any) => {
-      this.cursorX = this.calculateCursorXSmooth(this.viewBoxMaxRadius * Math.cos(Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI/2)));
-      this.cursorY = this.calculateCursorYSmooth(this.viewBoxMaxRadius * Math.sin(Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI/2)));
+      this.phoneTiltAngle = Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI / 2);
+      this.cursorX = this.calculateCursorSmooth(this.viewBoxMaxRadius * Math.cos(this.phoneTiltAngle), 'X');
+      this.cursorY = this.calculateCursorSmooth(this.viewBoxMaxRadius * Math.sin(this.phoneTiltAngle), 'Y');
+      
       this.cdr.detectChanges();
     });
+  }
+
+  ionViewDidEnter() {
+    this.swiperReady();
   }
 
   ionViewWillLeave() {
     Motion.removeAllListeners();
   }
+
+  private calculateCursorSmooth(newValue: number, whichCoordinate: string): number {
+    switch (whichCoordinate) {
+      case 'X':
+        this.cursorArray = this.cursorXValues;
+        break;
+      case 'Y':
+        this.cursorArray = this.cursorYValues;
+        break;
+    }
+
+    this.cursorArray.push(newValue);
+    if (this.cursorArray.length > this.sampleSize) {
+      this.cursorArray.shift();
+    }
+
+    if (this.cursorArray.length < this.sampleSize) {
+      return this.cursorArray[this.cursorArray.length - 1];
+    }
+
+    return this.cursorArray.reduce((a, b) => a + b, 0) / this.cursorArray.length;
+  }
+
+
+  dataLabelsFormatter(weekOrHour: string): string {
+    if (weekOrHour == 'week') return this.daysName[this.daysCount++ % 7];
+    if (weekOrHour == 'hour') return this.hoursName[this.hoursCount++ % 8];
+    return '';
+  }
+
+  donutFieldsNameFormatter(fieldName: string, weekOrHour: string): string {
+    const lastChar = parseFloat(fieldName[fieldName.length - 1]);
+    if (weekOrHour == 'week') return this.daysName[lastChar - 1];
+    if (weekOrHour == 'hour') return this.hoursName[lastChar - 1];
+    return '';
+  }
+
+  swiperReady() {
+    this.swiper = this.swiperRef?.nativeElement.swiper;
+  }
+
+  goNext() {
+    this.swiper?.slideNext();
+  }
+
+  goPrev() {
+    this.swiper?.slidePrev();
+  }
+
+  swiperSlideChanged($event: any) { }
 }

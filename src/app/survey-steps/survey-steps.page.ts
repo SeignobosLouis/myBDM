@@ -18,7 +18,7 @@ export class SurveyStepsPage implements OnInit {
 
   swiper?: Swiper;
 
-  surveyName: string = "az";
+  surveyName: string = "";
 
   selectedImage: any;
 
@@ -35,7 +35,6 @@ export class SurveyStepsPage implements OnInit {
 
   ionViewDidEnter() {
     this.swiperReady();
-
   }
 
   swiperReady() {
@@ -53,7 +52,7 @@ export class SurveyStepsPage implements OnInit {
   swiperSlideChanged($event: any) { }
 
   updateCardBackground($event: ColorEvent) {
-    this.colorBackgroundPicked = $event.color.hex
+    this.colorBackgroundPicked = $event.color.hex;
   }
 
   async selectImage() {

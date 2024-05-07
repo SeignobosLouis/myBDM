@@ -9,6 +9,8 @@ import { VotePageRoutingModule } from './vote-routing.module';
 import { VotePage } from './vote.page';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 
 @NgModule({
   imports: [
@@ -18,6 +20,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     VotePageRoutingModule,  
     NgApexchartsModule,
   ],
-  declarations: [VotePage]
+  declarations: [VotePage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class VotePageModule {}

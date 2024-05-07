@@ -68,6 +68,18 @@
   font-size: 10vh;
 }
 
+swiper-container {
+  width: 100%;
+  height: 100%
+}
+
+swiper-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 ion-avatar {
   width: 5vh;
   height: 5vh;
