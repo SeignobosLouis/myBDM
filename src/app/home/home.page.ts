@@ -25,7 +25,7 @@ export class HomePage {
   }
 
   goToSurvey(){
-    this.router.navigate(['/survey']);
+    this.router.navigate(['/socketio']);
   }
 
   goToVote(){

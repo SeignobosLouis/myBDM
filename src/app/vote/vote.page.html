@@ -15,25 +15,11 @@
 <ion-content>
   <swiper-container #swiper (slidechange)="swiperSlideChanged($event)" [pagination]="true">
     <swiper-slide>
-      <ion-text>
-        cursorX: {{ cursorX }}
-      </ion-text>
-      <ion-text>cursorY: {{ cursorY }}</ion-text>
-
-      <ion-text>cos: {{ cos }}</ion-text>
-
-      <ion-text>sin: {{ sin }}</ion-text>
-      <ion-text>phoneTiltAngle: {{ phoneTiltAngle }}</ion-text>
-
-      <input type="number" [value]="viewBoxMaxRadius" (input)="updateNumber($event)" />
-
-      <ion-item>
         <div id="chartAndSvgContainer"> <!-- Conteneur parent positionné relativement -->
-
           <div id="svgContainer">
             <svg viewBox="-250 -250 500 500" style="transform: scaleY(-1);">
               <g>
-                <circle [attr.cx]="cursorX" [attr.cy]="cursorY" [attr.fill]="'blue'" r="20"></circle>
+                <circle #coucou [attr.cx]="cursorX" [attr.cy]="cursorY" [attr.fill]="'blue'" r="20"></circle>
               </g>
             </svg>
           </div>
@@ -45,7 +31,31 @@
               [tooltip]="daysChartOptions.tooltip"></apx-chart>
           </div>
         </div>
-      </ion-item>
+        <!--<ion-text>
+          cursorX : {{ cursorX}}
+        </ion-text>
+        <ion-text>
+          cursorY : {{ cursorY}}
+        </ion-text>
+        <ion-text>
+          x : {{ ok }}
+        </ion-text>
+        <ion-text>
+          y : {{ ok1 }}
+        </ion-text>
+        <ion-text>
+          top : {{ ok2 }}
+        </ion-text>
+        <ion-text>
+          left : {{ ok3 }}
+        </ion-text>
+        <ion-text>
+          try : {{ ok4 }}
+        </ion-text>
+        <ion-text>
+          const_try : {{ ok5 }}
+        </ion-text>-->
+        
     </swiper-slide>
     <swiper-slide>
       <ion-item>

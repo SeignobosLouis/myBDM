@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { io, Socket } from "socket.io-client";
+
 
 @NgModule({
   declarations: [AppComponent],

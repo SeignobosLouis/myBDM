@@ -128,7 +128,9 @@ export class VotePage {
 
   ionViewWillEnter() {
     Motion.addListener('accel', (data: any) => {
-      this.phoneTiltAngle = (1.25 * (Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI / 2))) - this.tiltAngleCorrection;
+      //this.phoneTiltAngle = (1.25 * (Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI / 2))) - this.tiltAngleCorrection;
+      this.phoneTiltAngle = (1.25 * (Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI / 2)));
+
       this.cos = Math.cos(this.phoneTiltAngle);
       this.sin = Math.sin(this.phoneTiltAngle);
       this.cursorX = this.calculateCursorSmooth(this.viewBoxMaxRadius * Math.cos(this.phoneTiltAngle), 'X');

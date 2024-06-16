@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: () => import('./vote/vote.module').then( m => m.VotePageModule)
   },
   {
+    path: 'socketio',
+    loadChildren: () => import('./socketio/socketio.module').then( m => m.SocketioPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

@@ -9,7 +9,7 @@ export class LaunchService {
   constructor() { }
 
   private monSondage: Observable<boolean> = new Observable(observer => {
-    observer.next(true);
+    observer.next(false);
     /**setTimeout(() => {
       observer.next(false);
       observer.complete();
