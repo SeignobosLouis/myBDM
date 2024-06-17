@@ -7,9 +7,16 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -45%;
+    bottom: -70%;
 }
 
 #chartAndSvgContainer {
     position: relative;
+}
+
+#ionbuttonvote {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

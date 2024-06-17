@@ -43,11 +43,10 @@ export class VotePage {
   private cursorArray: number[] = [];
   private daysCount: number = 0;
   private hoursCount: number = 0;
-  //TO CHANGE
   private readonly tiltAngleCorrection: number = 1.92;
    phoneTiltAngle: number = 0;
   private sampleSize: number = 10;
-   viewBoxMaxRadius: number = 145;
+   viewBoxMaxRadius: number = 50;
   private readonly daysName: string[] = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
   private readonly hoursName: string[] = ["17h", "18h", "19h", "20h", "21h", "22h", "23h", "24h"];
   cos: number | undefined;
@@ -128,7 +127,6 @@ export class VotePage {
 
   ionViewWillEnter() {
     Motion.addListener('accel', (data: any) => {
-      //this.phoneTiltAngle = (1.25 * (Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI / 2))) - this.tiltAngleCorrection;
       this.phoneTiltAngle = (1.25 * (Math.atan(data.accelerationIncludingGravity.x / data.accelerationIncludingGravity.z) + (Math.PI / 2)));
 
       this.cos = Math.cos(this.phoneTiltAngle);

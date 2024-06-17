@@ -4,16 +4,44 @@
       Accueil
     </ion-title>
     <ion-buttons slot="end">
-    <ion-button>
-      <ion-avatar>
-        <img src="../../assets/images/bluddy.png" alt="User avatar" />
-      </ion-avatar>
-    </ion-button>
+      <ion-button>
+        <ion-avatar>
+          <img src="../../assets/images/bluddy.png" alt="User avatar" />
+        </ion-avatar>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<ion-content [fullscreen]="true">
+<ion-content *ngIf="!isUserConnected" class="ion-padding">
+  <ion-button id="open-modal" expand="block">Se connecter</ion-button>
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Welcome</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="connectUser()" [strong]="true">Se connecter</ion-button>
+            <ion-button (click)="createUser()" [strong]="true">Créer le compte</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-input label="Entrez votre pseudo" labelPlacement="stacked" type="text" placeholder="Pseudo"
+            [(ngModel)]="userPseudo"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Entrez votre mot de passe" labelPlacement="stacked" type="text" placeholder="Mot de passe"
+            [(ngModel)]="userPassword"></ion-input>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+<ion-content *ngIf="isUserConnected" [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Accueil</ion-title>
@@ -25,14 +53,15 @@
     <div class="center-container">
       <ion-text class="upper-text">Sondages</ion-text>
       <ion-card *ngFor="let sondage of sondagesList">
-        <img style="width: 50%;" alt="Background survey image" src="../../assets/images/drive_baby.jpg" />
+        <!--<img style="width: 50%;" alt="Background survey image" src="../../assets/images/drive_baby.jpg" />-->
         <ion-card-header>
           <ion-card-title>{{sondage.title}}</ion-card-title>
           <div class="flex-container">
             <ion-avatar slot="start">
               <img src="../../assets/images/bluddy.png" alt="Creator Profile Picture">
             </ion-avatar>
-            <ion-card-subtitle>Soumis par {{sondage.pseudo}} le {{ creationDateAdapter(sondage.createdAt) | date: 'short' }}</ion-card-subtitle>
+            <ion-card-subtitle>Soumis par {{sondage.pseudo}} le {{ creationDateAdapter(sondage.createdAt) | date:
+              'short' }}</ion-card-subtitle>
           </div>
           <ion-card-subtitle>Délai fixé de {{ sondage.day_vote_time }} minutes pour voter le jour</ion-card-subtitle>
           <ion-card-subtitle>Délai fixé de {{ sondage.hour_vote_time }} minutes pour voter le jour</ion-card-subtitle>
@@ -43,7 +72,7 @@
           <p> Description : {{sondage.description}}</p>
           <ion-button expand="full" fill="solid" color="primary">
             <ion-icon slot="start" name="beer-outline"></ion-icon>
-            <ion-text (click)="goToVote()">Voter</ion-text>
+            <ion-text (click)="goToVote(sondage.id)">Voter</ion-text>
           </ion-button>
         </ion-card-content>
       </ion-card>

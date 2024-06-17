@@ -13,68 +13,20 @@
 </ion-header>
 
 <ion-content>
-  <swiper-container #swiper (slidechange)="swiperSlideChanged($event)" [pagination]="true">
-    <swiper-slide>
-        <div id="chartAndSvgContainer"> <!-- Conteneur parent positionné relativement -->
-          <div id="svgContainer">
-            <svg viewBox="-250 -250 500 500" style="transform: scaleY(-1);">
-              <g>
-                <circle #coucou [attr.cx]="cursorX" [attr.cy]="cursorY" [attr.fill]="'blue'" r="20"></circle>
-              </g>
-            </svg>
-          </div>
-          <div id="chart">
-            <apx-chart [series]="daysChartOptions.series" [chart]="daysChartOptions.chart"
-              [grid]="daysChartOptions.grid" [plotOptions]="daysChartOptions.plotOptions"
-              [responsive]="daysChartOptions.responsive" [dataLabels]="daysChartOptions.dataLabels"
-              [fill]="daysChartOptions.fill" [legend]="daysChartOptions.legend"
-              [tooltip]="daysChartOptions.tooltip"></apx-chart>
-          </div>
-        </div>
-        <!--<ion-text>
-          cursorX : {{ cursorX}}
-        </ion-text>
-        <ion-text>
-          cursorY : {{ cursorY}}
-        </ion-text>
-        <ion-text>
-          x : {{ ok }}
-        </ion-text>
-        <ion-text>
-          y : {{ ok1 }}
-        </ion-text>
-        <ion-text>
-          top : {{ ok2 }}
-        </ion-text>
-        <ion-text>
-          left : {{ ok3 }}
-        </ion-text>
-        <ion-text>
-          try : {{ ok4 }}
-        </ion-text>
-        <ion-text>
-          const_try : {{ ok5 }}
-        </ion-text>-->
-        
-    </swiper-slide>
-    <swiper-slide>
-      <ion-item>
-        <div id="chart">
-          <apx-chart [series]="hoursChartOptions.series" [chart]="hoursChartOptions.chart"
-            [grid]="hoursChartOptions.grid" [plotOptions]="hoursChartOptions.plotOptions"
-            [responsive]="hoursChartOptions.responsive" [dataLabels]="hoursChartOptions.dataLabels"
-            [fill]="hoursChartOptions.fill" [legend]="hoursChartOptions.legend"
-            [tooltip]="hoursChartOptions.tooltip"></apx-chart>
-        </div>
-
-        <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-          <svg [attr.width]="500" [attr.height]="500" viewBox="-250 -250 500 500" style="transform: scaleY(-1);">
-            <g>
-              <circle [attr.cx]="cursorX" [attr.cy]="cursorY" [attr.fill]="'blue'" r="20"></circle>
-            </g>
-          </svg>
-        </div>
-      </ion-item>
-    </swiper-slide>
-  </swiper-container>
+  <div id="chartAndSvgContainer">
+    <div id="svgContainer">
+      <svg viewBox="-250 -250 500 500" style="transform: scaleY(-1);">
+        <g>
+          <circle #coucou [attr.cx]="cursorX" [attr.cy]="cursorY" [attr.fill]="'blue'" r="20"></circle>
+        </g>
+      </svg>
+    </div>
+    <div id="chart">
+      <apx-chart [series]="daysChartOptions.series" [chart]="daysChartOptions.chart" [grid]="daysChartOptions.grid"
+        [plotOptions]="daysChartOptions.plotOptions" [responsive]="daysChartOptions.responsive"
+        [dataLabels]="daysChartOptions.dataLabels" [fill]="daysChartOptions.fill" [legend]="daysChartOptions.legend"
+        [tooltip]="daysChartOptions.tooltip"></apx-chart>
+    </div>
+  </div>
+  <ion-button id="ionbuttonvote">Valider le jour</ion-button>
 </ion-content>
