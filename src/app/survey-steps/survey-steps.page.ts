@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Swiper } from 'swiper';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ColorEvent } from 'ngx-color';
+import { io, Socket } from "socket.io-client";
+
 
 @Component({
   selector: 'app-survey-steps',
@@ -20,17 +22,32 @@ export class SurveyStepsPage implements OnInit {
 
   surveyName: string = "";
 
+  surveyDescription: string = "";
+
   selectedImage: any;
+
+  selectedDelayDay: string = "";
+
+  selectedDelayHour: string = "";
 
   ionCardWidth: any;
 
   colorBackgroundPicked: string ="";
 
-  constructor(private router: Router, private renderer: Renderer2) { }
+  socket: Socket;
+
+  constructor(private router: Router, private renderer: Renderer2) {
+    this.socket = io('http://84.235.235.229:3000');
+   }
 
   ngOnInit() {
     const routerState = this.router.getCurrentNavigation()?.extras.state;
-    this.surveyName = routerState?.['surveyNameInput']?.input.text;
+    this.surveyName = routerState?.['surveyNameInput']?.input.surveyName;
+    this.surveyDescription = routerState?.['surveyDescriptionInput']?.input.surveyDescription;
+    this.socket.on('canCreateSondageAnswer', (data) => {
+      if (data) alert ("Sondage créé avec succès");
+      else alert ("Sondage non crée car un autre est en cours");
+    })
   }
 
   ionViewDidEnter() {
@@ -53,6 +70,19 @@ export class SurveyStepsPage implements OnInit {
 
   updateCardBackground($event: ColorEvent) {
     this.colorBackgroundPicked = $event.color.hex;
+  }
+
+  createSondage() {
+    this.socket.emit('createSondageAction', {
+      id_user: 1,
+      date_creation: new Date(),
+      day_vote_time: parseInt(this.selectedDelayDay),
+      hour_vote_time: parseInt(this.selectedDelayHour),
+      title: this.surveyName,
+      description: this.surveyDescription,
+      associated_picture: this.selectedImage,
+      background_color: this.colorBackgroundPicked,
+    });
   }
 
   async selectImage() {

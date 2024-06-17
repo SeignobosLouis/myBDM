@@ -30,23 +30,23 @@
   <swiper-container #swiper (slidechange)="swiperSlideChanged($event)" [pagination]="true">
     <swiper-slide>
       <ion-item>
-        <ion-select interface="popover" placeholder="Délai de vote du jour">
-          <ion-select-option value="15min">15 min</ion-select-option>
-          <ion-select-option value="30min">30 min</ion-select-option>
-          <ion-select-option value="2h">2 h</ion-select-option>
-          <ion-select-option value="5h">5 h</ion-select-option>
-          <ion-select-option value="8h">8 h</ion-select-option>
+        <ion-select interface="popover" placeholder="Délai de vote du jour" [(ngModel)]="selectedDelayDay">
+          <ion-select-option value="15">15 min</ion-select-option>
+          <ion-select-option value="30">30 min</ion-select-option>
+          <ion-select-option value="120">2 h</ion-select-option>
+          <ion-select-option value="300">5 h</ion-select-option>
+          <ion-select-option value="480">8 h</ion-select-option>
         </ion-select>
       </ion-item>
     </swiper-slide>
     <swiper-slide>
       <ion-item>
-        <ion-select interface="popover" placeholder="Délai de vote de l'heure">
-          <ion-select-option value="15min">15 min</ion-select-option>
-          <ion-select-option value="30min">30 min</ion-select-option>
-          <ion-select-option value="2h">2 h</ion-select-option>
-          <ion-select-option value="5h">5 h</ion-select-option>
-          <ion-select-option value="8h">8 h</ion-select-option>
+        <ion-select interface="popover" placeholder="Délai de vote de l'heure" [(ngModel)]="selectedDelayHour">
+          <ion-select-option value="15">15 min</ion-select-option>
+          <ion-select-option value="30">30 min</ion-select-option>
+          <ion-select-option value="120">2 h</ion-select-option>
+          <ion-select-option value="300">5 h</ion-select-option>
+          <ion-select-option value="480">8 h</ion-select-option>
         </ion-select>
       </ion-item>
     </swiper-slide>
@@ -72,10 +72,10 @@
             </div>
           </ion-card-header>
           <ion-card-content>
-            <p>Le premier qui vote pas pour moi passera au fond même s'il n'y a rien du tout. </p>
+            <p>{{surveyDescription}}</p>
           </ion-card-content>
         </ion-card>
-        <ion-button id="confirmButton">
+        <ion-button id="confirmButton" (click)="createSondage()">
           <ion-icon slot="start" name="beer-outline"></ion-icon>
           <ion-text>Valider</ion-text>
         </ion-button>

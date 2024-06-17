@@ -8,8 +8,6 @@ import { io, Socket } from "socket.io-client";
 })
 export class SocketioPage implements OnInit {
   private socket: Socket;
-  public messages: any[] = [];
-
 
   constructor() {
     this.socket = io('http://84.235.235.229:3000');
@@ -35,18 +33,28 @@ export class SocketioPage implements OnInit {
     this.socket.on('getSondagesAnswer', (data) => {
       console.log(data);
     })
+
+    this.socket.on('canCreateSondageAnswer', (data) => {
+      console.log("canCreateSondageAnswer", data);
+    })
+
+    this.socket.on('noVotesAnswer', (data) => {
+      console.log("noVotesAnswer", data);
+    })
   }
-  
+
   sendMessage() {
     this.socket.emit('createSondageAction', {
-        id_user: 1,
-        date_creation: new Date(),
-        day_vote_time: 'lundi',
-        hour_vote_time: '14:30',
-        associated_picture: new Blob(),
-        background_color: 'red',
+      id_user: 1,
+      date_creation: new Date(),
+      day_vote_time: 10,
+      hour_vote_time: 0,
+      title: "Mon Premier Sondage",
+      description: "Voici mon premier sondage",
+      associated_picture: new Blob(),
+      background_color: "green",
     });
 
-    this.socket.emit('getSondagesAction');
+    //this.socket.emit('getSondagesAction');
   }
 }

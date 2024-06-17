@@ -6,9 +6,5 @@
 
 <ion-content>
   <ion-button (click)="sendMessage()">Envoyer un message</ion-button>
-  <ion-list *ngIf="messages.length > 0">
-    <ion-item *ngFor="let message of messages">
-      {{ message }}
-    </ion-item>
-  </ion-list>
+
 </ion-content>
